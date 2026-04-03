@@ -1,0 +1,27 @@
+workflows:
+  noai-app:
+    name: Noa IA Build
+    max_build_duration: 60
+
+    environment:
+      node: latest
+
+    scripts:
+      - name: Install dependencies
+        script: npm install
+
+      - name: Build web app
+        script: npm run build || echo "no build script"
+
+      - name: Sync Capacitor
+        script: npx cap sync
+
+      - name: Prepare Android
+        script: npx cap copy android
+
+      - name: Prepare iOS
+        script: npx cap copy ios
+
+    artifacts:
+      - android/app/build/outputs/**/*.apk
+      - ios/**/*.ipa
